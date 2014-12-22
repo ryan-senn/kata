@@ -1,53 +1,21 @@
-Problem Description
+# Mine Sweeper
 
-Have you ever played Minesweeper? It's a cute little game which comes within a certain Operating System whose name we can't really remember. Well, the goal of the game is to find all the mines within an MxN field. To help you, the game shows a number in a square which tells you how many mines there are adjacent to that square. For instance, take the following 4x4 field with 2 mines (which are represented by an * character):
+1. Given an input string consisting of dots and stars, replace the dots that are touching a star with x.
+    Input: "*.*....**" -> Output: "*x*x..x**"
+    Input: "..**..*.*" -> Output: ".x**xx*x*"
+    Input: "*...*.**." -> Output: "*x.x*x**x"
 
-*...
-....
-.*..
-....
-The same field including the hint numbers described above would look like this:
-*100
-2210
-1*10
-1110
-You should write a program that takes input as follows:
-The input will consist of an arbitrary number of fields. The first line of each field contains two integers n and m (0 < n,m <= 100) which stands for the number of lines and columns of the field respectively. The next n lines contains exactly m characters and represent the field. Each safe square is represented by an "." character (without the quotes) and each mine square is represented by an "*" character (also without the quotes). The first field line where n = m = 0 represents the end of input and should not be processed.
+2. This time around, replace the dots with the amount of stars that they touch.
+    Input: "*.*....**" -> Output: "*2*1001**"
+    Input: "..**..*.*" -> Output: "01**11*2*"
+    Input: "**..*.**." -> Output: "**11*2**1"
 
-Your program should produce output as follows:
+3. Given a two line input, check for dots that are touching a star either horizontally or vertically and replace them with x
+    Input:  "*.*.....\n
+             ..*...*."
+    Output: "*x*x..x.\n
+             xx*x.x*x"
 
-For each field, you must print the following message in a line alone:
+4. Do the same with 8 lines
 
-Field #x:
-
-Where x stands for the number of the field (starting from 1). The next n lines should contain the field with the "." characters replaced by the number of adjacent mines to that square. There must be an empty line between field outputs.
-
-Clues
-
-As you may have already noticed, each square may have at most 8 adjacent squares.
-
-Suggested Test Cases
-
-This is the acceptance test input:
-
-4 4
-*...
-....
-.*..
-....
-3 5
-**...
-.....
-.*...
-0 0
-and output:
-Field #1:
-*100
-2210
-1*10
-1110
-
-Field #2:
-**100
-33200
-1*100
+5. Replace the dots with the number of stars that they are touching

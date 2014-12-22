@@ -17,7 +17,7 @@ class StringCalculatorSpec extends ObjectBehavior
         $this->add("")->shouldReturn(0);
     }
 
-    function it_return_the_number_for_a_one_number_string()
+    function it_returns_an_int_for_a_one_number_string()
     {
         $this->add("3")->shouldReturn(3);
         $this->add("450")->shouldReturn(450);

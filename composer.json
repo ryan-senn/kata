@@ -1,0 +1,17 @@
+{
+    "name": "Ryan-Senn/kata",
+    "require-dev": {
+        "phpspec/phpspec": "~2.1"
+    },
+    "authors": [
+        {
+            "name": "Ryan-Senn",
+            "email": "ryan.senn.au@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kata\\": "src/"
+        }
+    }
+}

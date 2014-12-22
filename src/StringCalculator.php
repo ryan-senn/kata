@@ -10,7 +10,7 @@ class StringCalculator
 {
 
     /**
-     * @var array
+     * @var array Default separators
      */
     private $separators = [',', "\n"];
 
@@ -40,6 +40,8 @@ class StringCalculator
     }
 
     /**
+     * Takes a normalized string and returns an array of numbers smaller than 1001
+     *
      * @param $string
      *
      * @return array
@@ -57,6 +59,8 @@ class StringCalculator
     }
 
     /**
+     * Reads the directives and returns the separators in an array
+     *
      * @param $string
      *
      * @return null|string
@@ -80,6 +84,14 @@ class StringCalculator
         return null;
     }
 
+    /**
+     * Returns the directives about custom separators.
+     * The directives must start with "//" and end with "\n"
+     *
+     * @param $string
+     *
+     * @return null|string
+     */
     private function getCustomSeparatorsDirectives($string)
     {
         if(substr($string, 0, 2) === "//")
@@ -91,6 +103,8 @@ class StringCalculator
     }
 
     /**
+     * Returns a normalized string with just the numbers separated by a pipe
+     *
      * @param $string
      *
      * @return mixed
@@ -108,6 +122,8 @@ class StringCalculator
     }
 
     /**
+     * Returns an array of negative numbers
+     *
      * @param array $numbers
      *
      * @return array

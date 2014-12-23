@@ -1,6 +1,8 @@
 # Mine Sweeper
 
 1. Given an input string consisting of dots and stars, replace the dots that are touching a star with x.
+
+
     Input: "*.*....**" -> Output: "*x*x..x**"
     Input: "..**..*.*" -> Output: ".x**xx*x*"
     Input: "*...*.**." -> Output: "*x.x*x**x"

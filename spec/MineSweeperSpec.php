@@ -18,4 +18,9 @@ class MineSweeperSpec extends ObjectBehavior
         $this->render("..**..*.*")->shouldReturn(".x**xx*x*");
         $this->render("*...*.**.")->shouldReturn("*x.x*x**x");
     }
+
+    function it_should_replace_dots_with_the_amount_of_stars_touched()
+    {
+        $this->render("*.*....**")->shouldReturn("*2*1001**");
+    }
 }

@@ -4,135 +4,157 @@ namespace Kata;
 
 /**
  * Class StringCalculator
- * @package Kata
  */
 class StringCalculator
 {
 
     /**
-     * @var array Default separators
+     * @var array
      */
-    private $separators = [',', "\n"];
+    private $separators = [",", "\n"];
 
     /**
      * @param $string
      *
-     * @return int|number
+     * @return number
      */
     public function add($string)
     {
         $numbers = $this->getNumbers($string);
 
-        $invalid = $this->getNegativeNumbers($numbers);
-
-        if(count($invalid))
-        {
-            $message = implode(',', $invalid);
-            throw new \InvalidArgumentException($message);
-        }
-
-        if(count($numbers) < 2)
-        {
-            return (int)$string;
-        }
+        // should be instructions passed to the add method
+        $this->validate($numbers);
+        $numbers = $this->filter($numbers);
 
         return array_sum($numbers);
     }
 
     /**
-     * Takes a normalized string and returns an array of numbers smaller than 1001
-     *
      * @param $string
      *
      * @return array
      */
     private function getNumbers($string)
     {
-        $string = $this->getFormattedString($string);
+        $string = $this->sanitize($string);
 
-        $numbers = explode('|', $string);
-
-        return array_filter($numbers, function($number)
-        {
-            return $number <= 1000;
-        });
+        return explode("|", $string);
     }
 
     /**
-     * Reads the directives and returns the separators in an array
-     *
-     * @param $string
-     *
-     * @return null|string
-     */
-    private function getCustomSeparators($string)
-    {
-        $separatorDirectives = $this->getCustomSeparatorsDirectives($string);
-
-        if($separatorDirectives !== null)
-        {
-            preg_match('/\[([^\)]*)\]/', $separatorDirectives, $matches);
-
-            if(count($matches))
-            {
-                return explode("][", $matches[1]);
-            }
-
-            return [substr($separatorDirectives, 2, 1)];
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the directives about custom separators.
-     * The directives must start with "//" and end with "\n"
-     *
-     * @param $string
-     *
-     * @return null|string
-     */
-    private function getCustomSeparatorsDirectives($string)
-    {
-        if(substr($string, 0, 2) === "//")
-        {
-            return strstr($string, "\n", true);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns a normalized string with just the numbers separated by a pipe
-     *
      * @param $string
      *
      * @return mixed
      */
-    private function getFormattedString($string)
+    private function sanitize($string)
     {
-        if($this->getCustomSeparators($string) !== null)
-        {
-            $this->separators = array_merge($this->separators, $this->getCustomSeparators($string));
+        $separators = $this->getSeparators($string);
 
-            $string = substr($string, strlen($this->getCustomSeparatorsDirectives($string)) + 1);
-        }
-
-        return str_replace($this->separators, '|', $string);
+        return str_replace($separators, "|", $string);
     }
 
     /**
-     * Returns an array of negative numbers
+     * @param $string
      *
+     * @return array
+     */
+    private function getSeparators($string)
+    {
+        if($this->hasSeparatorInstructions($string))
+        {
+            $instructions = $this->getSeparatorInstructions($string);
+
+            $dirtySeparators = explode(']', $instructions);
+
+            $instructionFlags = ['//', '[', ']'];
+
+            $separators = str_replace($instructionFlags, "", $dirtySeparators);
+
+            $this->addSeparators($separators);
+        }
+
+        return $this->separators;
+    }
+
+    /**
+     * @param array $separators
+     *
+     * @internal param $separator
+     */
+    private function addSeparators(array $separators)
+    {
+        $this->separators = array_merge($this->separators, $separators);
+    }
+
+    /**
      * @param array $numbers
      *
      * @return array
      */
-    private function getNegativeNumbers($numbers)
+    private function validate(array $numbers)
+    {
+        $invalidNumbers = $this->getNegativeNumbers($numbers);
+
+        if(count($invalidNumbers))
+        {
+            throw new \InvalidArgumentException(implode(",", $invalidNumbers));
+        }
+    }
+
+    /**
+     * @param array $numbers
+     *
+     * @return array
+     */
+    private function filter(array $numbers)
+    {
+        return $this->getNumbersSmallerThan($numbers, 1001);
+    }
+
+    /**
+     * @param array $numbers
+     *
+     * @return array
+     */
+    private function getNegativeNumbers(array $numbers)
     {
         return array_filter($numbers, function($number)
         {
             return $number < 0;
         });
+    }
+
+    /**
+     * @param array $numbers
+     * @param int   $max
+     *
+     * @return array
+     */
+    private function getNumbersSmallerThan(array $numbers, $max = 1001)
+    {
+        return array_filter($numbers, function($number) use ($max)
+        {
+            return $number < $max;
+        });
+    }
+
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    private function hasSeparatorInstructions($string)
+    {
+        return substr($string, 0, 2) == "//";
+    }
+
+    /**
+     * @param $string
+     *
+     * @return string
+     */
+    private function getSeparatorInstructions($string)
+    {
+        return strstr($string, "\n", true);
     }
 }
